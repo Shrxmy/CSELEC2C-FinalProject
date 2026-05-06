@@ -1,4 +1,4 @@
-# GTD Attack Success Prediction: Section Group 8 Implementation
+# GTD Attack Success Prediction: 3CSD Group 8 Implementation
 
 This repository contains the notebook implementation for:
 
