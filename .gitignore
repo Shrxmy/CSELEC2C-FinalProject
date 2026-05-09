@@ -19,6 +19,7 @@ data/raw/*
 !data/raw/README.md
 data/processed/*
 !data/processed/.gitkeep
+data-backup/*
 
 # Models
 models/*
