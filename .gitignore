@@ -12,10 +12,11 @@ env/
 *.egg-info/
 
 # Data
-data-raw/*
-!data-raw/README.md
+data-backup/*
+!data-backup/README.md
 data/raw/*
 !data/raw/.gitkeep
+!data/raw/README.md
 data/processed/*
 !data/processed/.gitkeep
 

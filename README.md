@@ -37,27 +37,29 @@ The notebook is self-contained. It includes:
 
 ## Dataset
 
-Raw files are expected in:
+Raw files are expected in the canonical raw-data directory:
 
 ```text
-data-raw/
+data/raw/
 ```
 
-Expected main file:
+Expected files:
 
 ```text
-data-raw/globalterrorismdb_0522dist.xlsx
-data-raw/globalterrorismdb_2021Jan-June_1222dist.xlsx
+data/raw/globalterrorismdb_0522dist.xlsx
+data/raw/globalterrorismdb_2021Jan-June_1222dist.xlsx
 ```
+
+The main notebook expects both GTD files in `data/raw/`. The 2021 supplement is mandatory because the provider distributes that portion separately. Accepted formats are `.xlsx`, `.csv`, or `.parquet` using the expected GTD filenames.
 
 Source:
 
 - START Global Terrorism Database: https://www.start.umd.edu/data-tools/GTD
 - Kaggle mirror: https://www.kaggle.com/datasets/START-UMD/gtd
 
-The raw data files are ignored by Git because they are large. See `data-raw/README.md` for metadata.
+The raw data files are ignored by Git because they are large. See `data/raw/README.md` for metadata.
 
-The notebook loads the main 1970-2022 workbook first, then always loads the separate Jan-June 2021 workbook and deduplicates by `eventid`.
+The notebook loads the main GTD file and the mandatory separate Jan-June 2021 supplement, then deduplicates by `eventid`.
 
 ## Environment
 
@@ -111,11 +113,20 @@ Important output tables:
 
 - `results/tables/model_metrics.csv`
 - `results/tables/threshold_simulation_results.csv`
+- `results/tables/proposal_validation_selected_thresholds.csv`
 - `results/tables/subgroup_error_analysis.csv`
+- `results/tables/proposal_subgroup_disparity_summary.csv`
+- `results/tables/proposal_logistic_coefficients.csv`
+- `results/tables/proposal_xgboost_importance.csv`
+- `results/tables/proposal_xgboost_learning_curves.csv`
+- `results/tables/proposal_strict_feature_audit.csv`
+- `results/tables/proposal_feature_group_ablation.csv`
+- `results/tables/proposal_bootstrap_confidence_intervals.csv`
+- `results/tables/proposal_calibration_curves.csv`
 
-## Remaining Helper Code
+## Reusable Helper Code
 
-The `src/` folder now only keeps lightweight preprocessing-related helper files. The required implementation logic is in the notebook.
+The `src/` folder contains reusable project helpers, especially `src/gtd_pipeline.py`, so the main notebook stays concise and reproducible.
 
 ## LLM Use Disclosure Template
 

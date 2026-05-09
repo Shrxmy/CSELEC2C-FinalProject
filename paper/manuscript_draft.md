@@ -12,7 +12,7 @@ This project asks how classical and nonlinear supervised learning models differ 
 
 ## 2. Data
 
-The project uses the Global Terrorism Database from START, located in `data-raw/globalterrorismdb_0522dist.xlsx`. The target variable is `success`, coded as a binary indicator. The modeling frame uses only variables plausibly available at or near attack design or event recording time, including year, month, region, country, attack type, target type, weapon type, suicide indicator, multiple-incident indicator, claim indicator, and related categorical descriptors. Casualty, property-damage, ransom, and hostage-outcome fields are intentionally excluded because they are post-event consequences and would create target leakage.
+The project uses the Global Terrorism Database from START, placed locally under `data/raw/`. Both the main GTD workbook and the separate Jan-June 2021 supplement are required because the dataset provider distributes them as separate files. The target variable is `success`, coded as a binary indicator. The modeling frame uses only variables plausibly available at or near attack design or event recording time, including year, month, region, country, attack type, target type, weapon type, suicide indicator, multiple-incident indicator, claim indicator, and related categorical descriptors. Casualty, property-damage, ransom, and hostage-outcome fields are intentionally excluded because they are post-event consequences and would create target leakage.
 
 The split is temporal:
 
@@ -48,28 +48,28 @@ The default classification threshold of 0.50 is not treated as neutral. The pipe
 
 ## 6. Reproducibility
 
-The implementation is organized as reusable Python modules under `src/` and a main notebook under `notebooks/`. To reproduce the analysis:
+The implementation is organized around the main notebook `notebooks/3CSD_Group 8_Implementation.ipynb`. To reproduce the analysis:
 
 ```bash
 pip install -r requirements.txt
-python -m src.run_pipeline --data-path data-raw/globalterrorismdb_0522dist.xlsx
+jupyter notebook
 ```
 
-For a smoke test:
-
-```bash
-python -m src.run_pipeline --data-path data-raw/globalterrorismdb_0522dist.xlsx --nrows 5000
-```
-
-The pipeline writes trained models to `models/`, tables to `results/tables/`, and figures to `results/figures/`.
+Then place the GTD files in `data/raw/`, open the main notebook, set `USE_SAMPLE = False`, and run all cells. For a quick smoke test, set `USE_SAMPLE = True` inside the notebook before running. The notebook writes trained models to `models/`, tables to `results/tables/`, and figures to `results/figures/`.
 
 ## 7. Expected Results Tables and Figures
 
 The manuscript should report:
 
 - `model_metrics.csv`: ROC-AUC, average precision, F1, recall, precision, balanced accuracy
+- `proposal_robust_model_metrics.csv`: imbalance-aware metrics including failure-class AP, MCC, and Brier score
+- `proposal_bootstrap_confidence_intervals.csv`: bootstrap confidence intervals for key test metrics
+- `proposal_validation_selected_thresholds.csv`: validation-selected threshold evaluation
 - `threshold_simulation_results.csv`: model behavior under thresholds 0.30 to 0.70
 - `subgroup_error_analysis.csv`: false-positive and false-negative rates by subgroup
+- `proposal_subgroup_disparity_summary.csv`: compact subgroup disparity gaps
+- `proposal_feature_group_ablation.csv`: feature-group ablation results
+- `proposal_strict_feature_audit.csv`: leakage-sensitivity audit
 - ROC, precision-recall, confusion matrix, threshold-sensitivity, subgroup-disparity, and interpretability figures
 
 ## 8. Limitations
