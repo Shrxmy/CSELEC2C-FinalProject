@@ -2,7 +2,7 @@
 
 This repository contains the notebook implementation for:
 
-**Evaluating Algorithmic Bias and Feature Thresholds in Predicting Geopolitical Attack Success using Logistic Regression, XGBoost, and a Feedforward Neural Network on the Global Terrorism Database**
+**Evaluating Algorithmic Bias and Feature Thresholds in Predicting Geopolitical Attack Success using Logistic Regression, CART, XGBoost, and a Feedforward Neural Network on the Global Terrorism Database**
 
 ## Main Submission File
 
@@ -12,21 +12,40 @@ Submit and run:
 notebooks/3CSD_Group 8_Implementation.ipynb
 ```
 
-Advanced SOTA-oriented alternative:
+This second notebook uses native-categorical XGBoost, expanded leakage-controlled GTD features, validation hyperparameter search, and validation-optimized thresholds.
+
+The previous three-model notebook is retained as:
 
 ```text
-notebooks/3CSD_Group 8_SOTA_XGBoost_Implementation.ipynb
+notebooks/3CSD_Group 8_Implementation_Original.ipynb
 ```
 
-This second notebook uses native-categorical XGBoost, expanded leakage-controlled GTD features, validation hyperparameter search, and validation-optimized thresholds.
+A random-split comparison notebook is also available for checking temporal-vs-random split performance:
+
+```text
+notebooks/3CSD_Group 8_Implementation_Random-Split.ipynb
+```
+
+The random-split notebook writes outputs to `models/random_split/`, `results/figures/random_split/`, and `results/tables/random_split/` so it does not overwrite the manuscript-facing temporal-split results.
+
+Current random-vs-temporal comparison outputs are also saved as:
+
+```text
+results/tables/temporal_vs_random_split_comparison.csv
+results/figures/temporal_vs_random_split_comparison.png
+```
+
+Summary: the random split produces higher test scores for all models because it mixes years across train/validation/test. The temporal split remains the main manuscript setting because it is stricter and better approximates forward-looking generalization.
 
 The notebook is self-contained. It includes:
 
 - GTD data loading
 - feature selection and leakage control
 - preprocessing
-- temporal train-validation-test splitting
-- Logistic Regression baseline
+- temporal train-validation-test splitting in the main notebook
+- optional stratified random split in the comparison notebook
+- Logistic Regression linear baseline
+- CART single-tree baseline
 - XGBoost SOTA tabular model
 - PyTorch feedforward neural network
 - ROC/PR/confusion matrix evaluation
@@ -128,7 +147,7 @@ Important output tables:
 
 The `src/` folder contains reusable project helpers, especially `src/gtd_pipeline.py`, so the main notebook stays concise and reproducible.
 
-## LLM Use Disclosure Template
+## LLM Use Disclosure
 
 ```text
 An LLM was used for brainstorming the research framing, organizing the project structure, reviewing possible methodological risks, and improving grammar. All implementation decisions, experimental runs, result interpretation, and final claims were reviewed, verified, and authored by the student researchers.
