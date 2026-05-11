@@ -20,6 +20,14 @@ The previous three-model notebook is retained as:
 notebooks/3CSD_Group 8_Implementation_Original.ipynb
 ```
 
+A self-contained submission copy is available if only the notebook and PDF are required:
+
+```text
+notebooks/3CSD_Group 8_Implementation_Self-Contained.ipynb
+```
+
+This self-contained version includes the helper pipeline code directly inside the notebook and does not require the `src/` folder. It still requires the GTD raw files and Python packages from `requirements.txt`.
+
 A random-split comparison notebook is also available for checking temporal-vs-random split performance:
 
 ```text
