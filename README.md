@@ -20,6 +20,22 @@ The previous three-model notebook is retained as:
 notebooks/3CSD_Group 8_Implementation_Original.ipynb
 ```
 
+A rubric-oriented novel deep-learning copy is available for the version that emphasizes methodological contribution:
+
+```text
+notebooks/3CSD_Group 8_Novel_DL_Implementation.ipynb
+```
+
+This copy adds the proposed **GTD-FocalResNet** model: a tuned focal-loss residual tabular neural network with softened class weighting, feature dropout, and temperature calibration for imbalanced, temporally shifted GTD prediction. Its validation search is saved to `results/tables/proposal_focal_resnet_tuning.csv`.
+
+A compact self-contained modeling notebook is also available:
+
+```text
+notebooks/3CSD_Group 8_Light_Reproducible_Implementation.ipynb
+```
+
+This light version does not require `src/`, supports `SPLIT_MODE = "temporal"` or `"random"`, includes `TRAINING_PROFILE = "submission"` or `"max"`, caches cleaned selected columns under `data/processed/` for faster reruns, can optionally attempt raw-data download when configured, saves sklearn/tree models as `.joblib` and PyTorch models as `.pt` checkpoints with matching preprocessors, removes SHAP/bootstrap/subgroup extras, and keeps only core scores, confusion matrices, learning curves for all models, and permutation feature importance for all models.
+
 A self-contained submission copy is available if only the notebook and PDF are required:
 
 ```text
@@ -82,7 +98,6 @@ The main notebook expects both GTD files in `data/raw/`. The 2021 supplement is 
 Source:
 
 - START Global Terrorism Database: https://www.start.umd.edu/data-tools/GTD
-- Kaggle mirror: https://www.kaggle.com/datasets/START-UMD/gtd
 
 The raw data files are ignored by Git because they are large. See `data/raw/README.md` for metadata.
 
