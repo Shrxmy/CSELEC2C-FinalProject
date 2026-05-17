@@ -1,86 +1,32 @@
-# GTD Attack Success Prediction: 3CSD Group 8 Implementation
+# GTD Attack Success Prediction: 3CSD Group 8
 
-This repository contains the notebook implementation for:
+This repository contains the final cleaned project files for predicting the GTD-coded `success` outcome of recorded terrorism incidents.
 
-**Evaluating Algorithmic Bias and Feature Thresholds in Predicting Geopolitical Attack Success using Logistic Regression, CART, XGBoost, and a Feedforward Neural Network on the Global Terrorism Database**
-
-## Main Submission File
-
-Submit and run:
+## Main Notebooks
 
 ```text
 notebooks/3CSD_Group 8_Implementation.ipynb
-```
-
-This second notebook uses native-categorical XGBoost, expanded leakage-controlled GTD features, validation hyperparameter search, and validation-optimized thresholds.
-
-The previous three-model notebook is retained as:
-
-```text
-notebooks/3CSD_Group 8_Implementation_Original.ipynb
-```
-
-A rubric-oriented novel deep-learning copy is available for the version that emphasizes methodological contribution:
-
-```text
 notebooks/3CSD_Group 8_Novel_DL_Implementation.ipynb
 ```
 
-This copy adds the proposed **GTD-FocalResNet** model: a tuned focal-loss residual tabular neural network with softened class weighting, feature dropout, and temperature calibration for imbalanced, temporally shifted GTD prediction. Its validation search is saved to `results/tables/proposal_focal_resnet_tuning.csv`.
+The main implementation notebook is self-contained and includes data loading, cleaning, temporal/random split triggers, model training, scoring, confusion matrices, learning curves, and permutation feature importance.
 
-A compact self-contained modeling notebook is also available:
+The novel deep-learning notebook contains the proposed **GTD-FocalResNet** experiment.
 
-```text
-notebooks/3CSD_Group 8_Light_Reproducible_Implementation.ipynb
-```
-
-This light version does not require `src/`, supports `SPLIT_MODE = "temporal"` or `"random"`, includes `TRAINING_PROFILE = "submission"` or `"max"`, caches cleaned selected columns under `data/processed/` for faster reruns, can optionally attempt raw-data download when configured, saves sklearn/tree models as `.joblib` and PyTorch models as `.pt` checkpoints with matching preprocessors, removes SHAP/bootstrap/subgroup extras, and keeps only core scores, confusion matrices, learning curves for all models, and permutation feature importance for all models.
-
-A self-contained submission copy is available if only the notebook and PDF are required:
+## Main Documents
 
 ```text
-notebooks/3CSD_Group 8_Implementation_Self-Contained.ipynb
+paper/ML_Project_Working_Document.docx
+paper/GTD_Attack_Success_Manuscript.docx
+paper/GTD_Model_Notebook_Summary_for_Groupmates.docx
+paper/Template_ML_Project.docx
 ```
 
-This self-contained version includes the helper pipeline code directly inside the notebook and does not require the `src/` folder. It still requires the GTD raw files and Python packages from `requirements.txt`.
-
-A random-split comparison notebook is also available for checking temporal-vs-random split performance:
-
-```text
-notebooks/3CSD_Group 8_Implementation_Random-Split.ipynb
-```
-
-The random-split notebook writes outputs to `models/random_split/`, `results/figures/random_split/`, and `results/tables/random_split/` so it does not overwrite the manuscript-facing temporal-split results.
-
-Current random-vs-temporal comparison outputs are also saved as:
-
-```text
-results/tables/temporal_vs_random_split_comparison.csv
-results/figures/temporal_vs_random_split_comparison.png
-```
-
-Summary: the random split produces higher test scores for all models because it mixes years across train/validation/test. The temporal split remains the main manuscript setting because it is stricter and better approximates forward-looking generalization.
-
-The notebook is self-contained. It includes:
-
-- GTD data loading
-- feature selection and leakage control
-- preprocessing
-- temporal train-validation-test splitting in the main notebook
-- optional stratified random split in the comparison notebook
-- Logistic Regression linear baseline
-- CART single-tree baseline
-- XGBoost SOTA tabular model
-- PyTorch feedforward neural network
-- ROC/PR/confusion matrix evaluation
-- threshold simulations
-- subgroup error disparity analysis
-- Logistic Regression coefficient analysis
-- XGBoost SHAP or feature-importance analysis
+The template file is retained for formatting reference.
 
 ## Dataset
 
-Raw files are expected in the canonical raw-data directory:
+Raw GTD files are expected in:
 
 ```text
 data/raw/
@@ -93,15 +39,85 @@ data/raw/globalterrorismdb_0522dist.xlsx
 data/raw/globalterrorismdb_2021Jan-June_1222dist.xlsx
 ```
 
-The main notebook expects both GTD files in `data/raw/`. The 2021 supplement is mandatory because the provider distributes that portion separately. Accepted formats are `.xlsx`, `.csv`, or `.parquet` using the expected GTD filenames.
-
 Source:
 
 - START Global Terrorism Database: https://www.start.umd.edu/data-tools/GTD
 
-The raw data files are ignored by Git because they are large. See `data/raw/README.md` for metadata.
+## Processed Data
 
-The notebook loads the main GTD file and the mandatory separate Jan-June 2021 supplement, then deduplicates by `eventid`.
+The notebook uses two kinds of processed data:
+
+```text
+data/processed/gtd_light_full.pkl
+```
+
+This is the cleaned selected-column cache used to avoid reparsing the raw Excel files on reruns.
+
+The actual train/validation/test split files are saved under:
+
+```text
+data/processed/temporal/
+data/processed/random/
+```
+
+Each split folder contains:
+
+```text
+X_train.parquet
+X_valid.parquet
+X_test.parquet
+y_train.csv
+y_valid.csv
+y_test.csv
+split_summary.csv
+numeric_features.csv
+categorical_features.csv
+```
+
+The temporal split is the main paper setting. The random split is only for comparison.
+
+## Main Notebook Settings
+
+Important switches inside the notebook:
+
+```python
+SPLIT_MODE = "temporal"          # "temporal" or "random"
+TRAINING_PROFILE = "submission"  # "submission" or "max"
+CACHE_DATA = True
+SAVE_PROCESSED_SPLITS = True
+REBUILD_DATA_CACHE = False
+DOWNLOAD_DATA_IF_MISSING = False
+```
+
+## Models
+
+The final implementation compares:
+
+- Logistic Regression
+- CART
+- XGBoost
+- Feedforward Neural Network
+- GTD-FocalResNet
+
+## Current Outputs
+
+Current outputs are saved under:
+
+```text
+results/light_reproducible/
+models/light_reproducible/
+```
+
+The paper mainly uses:
+
+```text
+results/light_reproducible/temporal/tables/scores.csv
+results/light_reproducible/temporal/figures/confusion_matrices.png
+results/light_reproducible/temporal/figures/learning_curve_neural_models_f1_roc_auc.png
+results/light_reproducible/temporal/figures/feature_importance_all_models.png
+results/tables/temporal_vs_random_split_comparison.csv
+results/figures/temporal_vs_random_split_comparison.png
+```
 
 ## Environment
 
@@ -119,59 +135,8 @@ Then open:
 notebooks/3CSD_Group 8_Implementation.ipynb
 ```
 
-## Notebook Settings
-
-Inside the notebook:
-
-```python
-USE_SAMPLE = False
-RUN_SHAP = True
-USE_GPU = True
-SAVE_PROCESSED_SPLITS = False
-```
-
-Use `USE_SAMPLE = True` only for a quick test. Final reported results should use `USE_SAMPLE = False`.
-
-`SAVE_PROCESSED_SPLITS = False` avoids writing extra Parquet/CSV split files. Set it to `True` only if the instructor wants intermediate processed data saved for reproducibility.
-
-Set `USE_GPU = True` when the machine has a CUDA-capable GPU. GPU acceleration applies to XGBoost and the PyTorch feedforward neural network. Logistic Regression remains CPU-based.
-
-On Windows or WSL2, PyTorch GPU support depends on the installed PyTorch build, NVIDIA driver, and CUDA availability. The notebook prints `torch.cuda.is_available()` and the selected neural-network device in the setup cell.
-
-XGBoost is also requested on CUDA when available. During evaluation, it may show a warning because the sklearn preprocessing output is a CPU matrix; training still uses the requested XGBoost device.
-
-## Outputs
-
-The notebook saves artifacts to:
-
-```text
-models/
-results/figures/
-results/tables/
-data/processed/
-```
-
-Important output tables:
-
-- `results/tables/model_metrics.csv`
-- `results/tables/threshold_simulation_results.csv`
-- `results/tables/proposal_validation_selected_thresholds.csv`
-- `results/tables/subgroup_error_analysis.csv`
-- `results/tables/proposal_subgroup_disparity_summary.csv`
-- `results/tables/proposal_logistic_coefficients.csv`
-- `results/tables/proposal_xgboost_importance.csv`
-- `results/tables/proposal_xgboost_learning_curves.csv`
-- `results/tables/proposal_strict_feature_audit.csv`
-- `results/tables/proposal_feature_group_ablation.csv`
-- `results/tables/proposal_bootstrap_confidence_intervals.csv`
-- `results/tables/proposal_calibration_curves.csv`
-
-## Reusable Helper Code
-
-The `src/` folder contains reusable project helpers, especially `src/gtd_pipeline.py`, so the main notebook stays concise and reproducible.
-
 ## LLM Use Disclosure
 
 ```text
-An LLM was used for brainstorming the research framing, organizing the project structure, reviewing possible methodological risks, and improving grammar. All implementation decisions, experimental runs, result interpretation, and final claims were reviewed, verified, and authored by the student researchers.
+An LLM was used for brainstorming the research framing, organizing the project structure, reviewing possible methodological risks, improving grammar, and assisting with document/notebook cleanup. All implementation decisions, experimental runs, result interpretation, and final claims were reviewed, verified, and authored by the student researchers.
 ```
